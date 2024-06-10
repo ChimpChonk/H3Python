@@ -1,49 +1,93 @@
-from model.person import Person
+from data import WriteData, ReadData
 from fbi_list import FBIList
 
-# print(FBIList().filter_by_category(""))
+
+def main():
+
+    missing_persons, gang_members = FBIList.fetch_data()
+    WriteData.save_to_csv(missing_persons, "missing_persons.csv")
+    WriteData.save_to_csv(gang_members, "gang_members.csv")
+
+    while True:
+        display_menu()
+        menu_choice = int(input("Enter your choice: "))
+
+        match menu_choice:
+            case 1:
+                choice_one()
+            case 2:
+                choice_two()
+            case 3:
+                break
+
+def display_menu():
+    print("[1] Show missing people")
+    print("[2] Show gang members")
+    print("[3] Exit")
+
+def choice_one():
+    data = ReadData.read_csv("missing_persons.csv")
+
+    print("Missing People:")
+    print("------------------------------------------")
+    print("|ID | First Name | Last Name | Last Seen |")
+    print("------------------------------------------")
+
+    for item in data:
+        for key, value in item.items():
+            print(f"{value} | ", end="")
+        print()
+    print("------------------------------------------")
+
+    while True:
+        sub_menu()
+        menu_choice = int(input("Enter your choice: "))
+
+        match menu_choice:
+            case 1:
+                sub_menu("missing_persons.csv")
+            case 2:
+                break
 
 
-import requests
-import csv
-import json
+def choice_two():
+    data = ReadData.read_csv("gang_members.csv")
 
-# FBI API URL
-FBI_URL = "https://api.fbi.gov/wanted/v1/list"
-missing_person_category = "Missing Persons"
-gang_member_category = "Criminal Enterprise Investigations"
+    print("Gang Members:")
+    print("------------------------------------------")
+    print("|ID | First Name | Last Name | Gang Name |")
+    print("------------------------------------------")
 
-# Hent data fra FBI API
-response = requests.get(FBI_URL)
-data = response.json()["items"]
-# print(data)
+    for item in data:
+        for key, value in item.items():
+            print(f"{value} | ", end="")
+        print()
+    print("------------------------------------------")
 
-# Transformér data til struktureret format
-transformed_data = []
-id = 0
-for item in data:
-    if item["subjects"][0].find(missing_person_category) != -1:
-        transformed_item = {
-            "id": item["uid"],
-            "category": item["subjects"],
-            "name": item["title"],
-        }
-        transformed_data.append(transformed_item)
-    elif item["subjects"][0].find(gang_member_category) != -1:
-        transformed_item = {
-            "id": item["uid"],
-            "category": item["subjects"],
-            "name": item["title"],
-        }
-        transformed_data.append(transformed_item)
+def sub_menu(location):
+    while True:
+        print("[1] Update person")
+        print("[2] exit")
+        
+        choice = int(input("Enter your choice: "))
 
-print(transformed_data)
+        if choice == 1:
+            name = input("Enter name: ")
+            if location == "missing_persons.csv":
+                update_stat = input("Enter update Last Seen: ")
+                update_person(name, location, update_stat)
+            elif location == "gang_members.csv":
+                update_stat = input("Enter update Gang Name: ")
+                update_person(name, location, update_stat)
+        elif choice == 2:
+            break
 
-# Gem data som CSV-fil
-# with open("fbi_data.csv", "w", newline="") as csvfile:
-#     fieldnames = ["id", "category", "name", "aliases", "details"]
-#     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-#     writer.writeheader()
-#     for row in transformed_data:
-#         writer.writerow(row)
+def update_person(name, location, updated_data):
+    if location == "missing_persons.csv":
+        WriteData.save_to_csv(name, "missing_persons.csv")
+    elif location == "gang_members.csv":
+        WriteData.save_to_csv(name, "gang_members.csv")
+
+if __name__ == "__main__":
+    main()
