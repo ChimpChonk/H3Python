@@ -5,7 +5,8 @@ import re
 
 class FBIList:
     def fetch_data(FBI_URL):
-        # FBI_URL = "https://api.fbi.gov/wanted/v1/list"
+        FILENAME_GANG_MEMBERS = "gang_members.csv"
+        FILENAME_MISSING_PERSONS = "missing_persons.csv"
         missing_person_category = "Missing Persons"
         gang_member_category = "Criminal Enterprise Investigations"
 
@@ -49,8 +50,8 @@ class FBIList:
                     print(f"Unable to split the name for title: {title}")
                     continue
                 
-            WriteData.save_to_csv(transformed_misssing_person_data, "missing_persons.csv")
-            WriteData.save_to_csv(transformed_gang_data, "gang_members.csv")
+            WriteData.save_to_csv(transformed_misssing_person_data, FILENAME_MISSING_PERSONS)
+            WriteData.save_to_csv(transformed_gang_data, FILENAME_GANG_MEMBERS)
 
             return True
 

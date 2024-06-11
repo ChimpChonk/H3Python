@@ -1,6 +1,6 @@
 import os
 import csv
-from teacher import Teacher
+from model.teacher import Teacher
 class TEC:
     def __init__(self):
         self.teachers = []

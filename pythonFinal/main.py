@@ -1,6 +1,6 @@
 import os
-import model.tec as TEC
-import model.teacher as Teacher
+from model.tec import TEC
+from model.teacher import Teacher
 
 FILENAME_TECHERS = "data/teachers.csv"
 FILENAME_SUBJECTS = "data/subjects.csv"
@@ -21,7 +21,7 @@ def load_data():
 
 def save_data(tec, subjects):
     tec.save_teachers_to_csv(FILENAME_TECHERS)
-    tec.save_subjects(FILENAME_SUBJECTS, subjects)
+    subjects.save_subjects(FILENAME_SUBJECTS)
 
 def create_teacher(tec, subjects):
     first_name = input("Fornavn: ")
@@ -38,6 +38,8 @@ def create_teacher(tec, subjects):
         print(f"{teacher.get_full_name()} er nu oprettet som lærer med følgende fag: {subject}")
     else:
         print("Fejl i valg. Prøv igen.")
+
+
 
 def main():
     tec, subjects = load_data()

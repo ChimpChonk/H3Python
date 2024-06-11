@@ -3,6 +3,8 @@ from fbi_list import FBIList
 import threading
 import time
 
+FILENAME_MISSING_PERSONS = "missing_persons.csv"
+FILENAME_GANG_MEMBERS = "gang_members.csv"
 def background_thread():
     while True:
         url = "https://api.fbi.gov/wanted/v1/list"
@@ -21,9 +23,9 @@ def main():
         menu_choice = int(input("Enter your choice: "))
         match menu_choice:
             case 1:
-                choice("missing_persons.csv")
+                choice(FILENAME_MISSING_PERSONS)
             case 2:
-                choice("gang_members.csv")
+                choice(FILENAME_GANG_MEMBERS)
             case 3:
                 exit("Shutting down...")
 
@@ -39,10 +41,10 @@ def choice(location):
             print(f"{key}: {value} ", end="")
         print()
 
-    if location == "missing_persons.csv":
-        sub_menu("missing_persons.csv")
-    elif location == "gang_members.csv":
-        sub_menu("gang_members.csv")
+    if location == FILENAME_MISSING_PERSONS:
+        sub_menu(FILENAME_MISSING_PERSONS)
+    elif location == FILENAME_GANG_MEMBERS:
+        sub_menu(FILENAME_GANG_MEMBERS)
 
 def sub_menu(location):
     while True:
@@ -53,10 +55,10 @@ def sub_menu(location):
 
         if choice == 1:
             id = int(input("Enter id: "))
-            if location == "missing_persons.csv":
+            if location == FILENAME_MISSING_PERSONS:
                 update_stat = input("Enter update Last Seen: ")
                 update_person(id, location, update_stat)
-            elif location == "gang_members.csv":
+            elif location == FILENAME_GANG_MEMBERS:
                 update_stat = input("Enter update Gang Name: ")
                 update_person(id, location, update_stat)
         elif choice == 2:
@@ -64,10 +66,10 @@ def sub_menu(location):
 
 
 def update_person(id, location, updated_data):
-    if location == "missing_persons.csv":
-        UpdateData.update_person(id, "missing_persons.csv", updated_data)
-    elif location == "gang_members.csv":
-        UpdateData.update_person(id, "gang_members.csv", updated_data)
+    if location == FILENAME_MISSING_PERSONS:
+        UpdateData.update_person(id, FILENAME_MISSING_PERSONS, updated_data)
+    elif location == FILENAME_GANG_MEMBERS:
+        UpdateData.update_person(id, FILENAME_GANG_MEMBERS, updated_data)
 
 if __name__ == "__main__":
     background_thread = threading.Thread(target=background_thread)

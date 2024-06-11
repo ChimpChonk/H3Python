@@ -3,6 +3,8 @@ import os
 
 class ReadData:
     def read_csv(filename):
+        gang_members = "gang_members"
+        missing_persons = "missing_persons"
         existing_data = []
         if os.path.exists("data/" + filename): 
             with open("data/" + filename, mode='r') as csvfile:
@@ -17,9 +19,9 @@ class ReadData:
                     }
                     
                     # Add 'last_seen' or 'gang' based on filename
-                    if "missing_persons" in filename:
+                    if missing_persons in filename:
                         filtered_row["Last Seen"] = row.get("Last Seen")
-                    elif "gang_members" in filename:
+                    elif gang_members in filename:
                         filtered_row["Gang Name"] = row.get("Gang Name")
 
                     id += 1
@@ -29,6 +31,8 @@ class ReadData:
     # Gem data i CSV-filer
 class WriteData:
     def save_to_csv(data, filename):
+        FILENAME_GANG_MEMBERS = "gang_members.csv"
+        FILENAME_MISSING_PERSONS = "missing_persons.csv"
         if os.path.exists("data/" + filename):
             existing_ids = ReadData.read_csv(filename)
             new_entries = [item for item in data if item.id not in [d['Uid'] for d in existing_ids]]
@@ -41,11 +45,11 @@ class WriteData:
             with open("data/" + filename, 'w', newline='') as file:
                 writer = csv.writer(file)
                 if data:
-                    if(filename == "missing_persons.csv"):
+                    if(filename == FILENAME_MISSING_PERSONS):
                         writer.writerow(["Id", "First Name", "Last Name", "Aliases", "Details","Last Seen"])
                         for item in data:
                             writer.writerow([item.id, item.first_name, item.last_name, item.aliases, item.details,"Unkown"])
-                    elif(filename == "gang_members.csv"):
+                    elif(filename == FILENAME_GANG_MEMBERS):
                         writer.writerow(["Id", "First Name", "Last Name", "Aliases", "Details", "Gang Name"])
                         for item in data:
                             writer.writerow([item.id, item.first_name, item.last_name, item.aliases, item.details,"Unkown"])
