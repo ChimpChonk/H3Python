@@ -17,34 +17,27 @@ class TEC:
     def list_teachers(self):
         return self.teachers
     
-    def load_teachers_from_csv(self, filename):
+    def load_from_csv(self, filename):
         if os.path.exists(filename):
             with open(filename, 'r') as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    first_name, last_name, subjects = row
-                    subjects_list = subjects.split(';')
+                    first_name = row['first_name']
+                    last_name = row['last_name']
+                    subjects = row['subjects']
+                    subjects_list = subjects.split('-')
                     teacher = Teacher(first_name, last_name, subjects_list[0])
-                    teacher.subject = subjects_list
+                    teacher.subjects = subjects_list
                     self.add_teacher(teacher)
     
-    def save_teachers_to_csv(self, filename):
+    def save_to_csv(self, filename):
         with open(filename, 'w', newline='') as file:
-            writer = csv.writer(file)
+            fieldnames = ['first_name', 'last_name', 'subjects']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
             for teacher in self.teachers:
-                writer.writerow([teacher.first_name, teacher.last_name, ';'.join(teacher.subject)])
-
-    def load_subjects(filename):
-        subjects = []
-        if os.path.exists(filename):
-            with open(filename, 'r') as file:
-                reader = csv.reader(file)
-                for row in reader:
-                    subjects.append(row[0])
-        return subjects
-    
-    def save_subjects(filename, subjects):
-        with open(filename, 'w', newline='') as file:
-            writer = csv.writer(file)
-            for subject in subjects:
-                writer.writerow([subject])
+                writer.writerow({
+                    'first_name': teacher.first_name,
+                    'last_name': teacher.last_name,
+                    'subjects': '-'.join(teacher.subjects)
+                })

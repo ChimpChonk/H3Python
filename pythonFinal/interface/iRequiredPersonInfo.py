@@ -3,12 +3,12 @@ from abc import ABC, abstractmethod
 class IRequiredPersonInfo(ABC):
     @property
     @abstractmethod
-    def first_name(self):
+    def first_name(self, firstName):
         pass
 
     @property
     @abstractmethod
-    def last_name(self):
+    def last_name(self, lastName):
         pass
 
     @property

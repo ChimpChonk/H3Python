@@ -1,3 +1,8 @@
 
 /pythonFinal/model/__pycache__
 /pythonFinal/interface/__pycache__
+/FIBMostWanted/__pycache__
+*.pyc
+/opgaver/Opgaver_dag2/e16_transform
+/opgaver/Opgaver_dag2/e15_two_dice_comprehension/tmc
+/opgaver/Opgaver_dag2/e15_two_dice_comprehension

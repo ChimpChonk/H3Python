@@ -16,9 +16,8 @@ def background_thread():
 
 
 def main():
-    
+    time.sleep(3)
     while True:
-        time.sleep(3)
         display_menu()
         menu_choice = int(input("Enter your choice: "))
         match menu_choice:
@@ -72,6 +71,7 @@ def update_person(id, location, updated_data):
         UpdateData.update_person(id, FILENAME_GANG_MEMBERS, updated_data)
 
 if __name__ == "__main__":
+    # FBIList.fetch_data("https://api.fbi.gov/wanted/v1/list")
     background_thread = threading.Thread(target=background_thread)
     background_thread.deamon = True
     background_thread.start()
